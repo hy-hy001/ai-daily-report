@@ -1,0 +1,233 @@
+name: 每日 Triage
+
+on:
+  schedule:
+    # 每天北京时间 08:00 运行（日报生成 06:03 之后）
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: '目标仓库 (owner/repo)'
+        required: false
+        default: 'hy-hy001/ai-daily-report'
+      since_hours:
+        description: '回溯多少小时'
+        required: false
+        default: '24'
+
+env:
+  TARGET_REPO: ${{ inputs.target_repo || 'hy-hy001/ai-daily-report' }}
+  SINCE_HOURS: ${{ inputs.since_hours || '24' }}
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      actions: read
+      pull-requests: read
+
+    steps:
+      - name: ⏰ 计算时间窗口
+        id: timewindow
+        run: |
+          SINCE=$(date -u -d "-${SINCE_HOURS} hours" +%Y-%m-%dT%H:%M:%SZ)
+          echo "since=$SINCE" >> "$GITHUB_OUTPUT"
+          echo "窗口: 过去 ${SINCE_HOURS} 小时" >> "$GITHUB_OUTPUT"
+
+      - name: 🔴 检查失败的 CI (CL)
+        id: check_ci
+        run: |
+          REPO="$TARGET_REPO"
+          SINCE="${{ steps.timewindow.outputs.since }}"
+
+          echo "## 🔴 昨天失败的 CI" >> triage_body.md
+          echo "" >> triage_body.md
+
+          # 获取失败的工作流运行
+          gh run list --repo "$REPO" \
+            --limit 30 \
+            --json conclusion,headBranch,createdAt,displayTitle,workflowName,url,number \
+            | python3 -c "
+import json, sys
+from datetime import datetime, timezone
+
+runs = json.load(sys.stdin)
+yesterday_failures = [r for r in runs if r.get('conclusion') in ('failure', 'cancelled', 'timed_out')]
+
+if not yesterday_failures:
+    print('✅ 过去 24 小时没有失败的 CI 运行\n')
+else:
+    print(f'⚠️ 发现 {len(yesterday_failures)} 个失败的 CI 运行：\n')
+    for r in yesterday_failures:
+        conclusion = r['conclusion']
+        icon = {'failure': '❌', 'cancelled': '🚫', 'timed_out': '⏰'}.get(conclusion, '❓')
+        created = r.get('createdAt','')[:19]
+        print(f'{icon} **{r[\"displayTitle\"]}**')
+        print(f'   - 工作流: {r[\"workflowName\"]} | 分支: {r[\"headBranch\"]}')
+        print(f'   - 时间: {created} | 状态: {conclusion}')
+        print(f'   - 🔗 {r[\"url\"]}\n')
+" 2>&1 | tee -a triage_body.md
+
+      - name: 🆕 检查新开的 Issue
+        id: check_issues
+        run: |
+          echo "" >> triage_body.md
+          echo "## 🆕 过去 24 小时新开的 Issue" >> triage_body.md
+          echo "" >> triage_body.md
+
+          gh issue list --repo "$TARGET_REPO" \
+            --state all \
+            --limit 30 \
+            --json number,title,state,createdAt,labels,url,author \
+            | python3 -c "
+import json, sys
+from datetime import datetime, timezone
+
+issues = json.load(sys.stdin)
+now = datetime.now(timezone.utc)
+since_ts = int(now.timestamp()) - int(${{ env.SINCE_HOURS }}) * 3600
+
+recent = [i for i in issues if datetime.fromisoformat(i['createdAt'].replace('Z','+00:00')).timestamp() > since_ts]
+
+if not recent:
+    print('📭 过去 24 小时没有新 Issue\n')
+else:
+    print(f'📥 共 {len(recent)} 个新 Issue：\n')
+    for i in recent:
+        labels = ' '.join(f'`{l[\"name\"]}`' for l in (i.get('labels') or []))
+        state_icon = '🟢' if i['state'] == 'open' else '🔒'
+        print(f'{state_icon} **#{i[\"number\"]} {i[\"title\"]}**')
+        print(f'   - 作者: @{i[\"author\"][\"login\"]} | 标签: {labels or \"无\"}')
+        print(f'   - 🔗 {i[\"url\"]}\n')
+" 2>&1 | tee -a triage_body.md
+
+      - name: 📝 检查最近的 Commit
+        id: check_commits
+        run: |
+          echo "" >> triage_body.md
+          echo "## 📝 最近的 Commit" >> triage_body.md
+          echo "" >> triage_body.md
+
+          SINCE="${{ steps.timewindow.outputs.since }}"
+
+          gh api "repos/$TARGET_REPO/commits?since=${SINCE}&per_page=20" \
+            --jq '.[] | {sha: .sha[:7], message: .commit.message.split(\"\n\")[0], author: .commit.author.name, date: .commit.author.date, url: .html_url}' \
+            | python3 -c "
+import json, sys, re
+
+lines = sys.stdin.read().strip()
+if not lines:
+    print('📭 过去 24 小时没有新 Commit\n')
+else:
+    # parse the multi-line json output
+    commits = []
+    for raw in lines.split('{\"sha\"'):
+        raw = raw.strip()
+        if not raw: continue
+        raw = '{\"sha\"' + raw
+        try:
+            commits.append(json.loads(raw))
+        except:
+            pass
+
+    if not commits:
+        print('📭 过去 24 小时没有新 Commit\n')
+    else:
+        print(f'🔨 共 {len(commits)} 个 Commit：\n')
+        for c in commits:
+            msg = c.get('message', '')
+            date = c.get('date', '')[:19] if c.get('date') else ''
+            print(f'🔹 **[{c[\"sha\"]}]** {msg}')
+            print(f'   - 作者: {c[\"author\"]} | {date}')
+            print(f'   - 🔗 {c[\"url\"]}\n')
+" 2>&1 | tee -a triage_body.md
+
+      - name: 🎯 挑出值得处理的
+        id: highlight
+        run: |
+          echo "" >> triage_body.md
+          echo "---" >> triage_body.md
+          echo "" >> triage_body.md
+          echo "## 🎯 值得关注的事项" >> triage_body.md
+          echo "" >> triage_body.md
+
+          python3 << 'PYEOF' 2>&1 | tee -a triage_body.md
+import json, sys
+
+body = open('triage_body.md').read()
+
+items = []
+
+# 1. 失败的 CI
+import re
+fail_matches = re.findall(r'❌ \*\*(.+?)\*\*', body)
+for m in fail_matches:
+    items.append(f'🔴 **需要排查**: CI 失败 — {m}')
+
+# 2. 新 Issue（有 label 的优先）
+issue_sections = body.split('🟢')
+for i, section in enumerate(issue_sections[1:], 1):
+    title_match = re.search(r'\*\*#(\d+) (.+?)\*\*', section)
+    label_match = re.search(r'标签: (.+)', section)
+    if title_match:
+        num = title_match.group(1)
+        title = title_match.group(2)
+        labels = label_match.group(1) if label_match else ''
+        if 'bug' in labels or 'urgent' in labels or 'enhancement' in labels:
+            items.append(f'🟡 **需要处理**: Issue #{num} — {title} (标签: {labels})')
+        else:
+            items.append(f'🔵 **可查看**: Issue #{num} — {title}')
+
+# 3. Commit 中有关键词的
+commit_sections = body.split('🔹')
+for section in commit_sections[1:]:
+    msg_match = re.search(r'\*\*\[(.+?)\]\*\* (.+)', section)
+    if msg_match:
+        sha = msg_match.group(1)
+        msg = msg_match.group(2)
+        keywords = ['fix', 'bug', 'hotfix', 'urgent', 'breaking', 'revert', 'rollback']
+        if any(k in msg.lower() for k in keywords):
+            items.append(f'🟠 **需要注意**: Commit {sha} — {msg}')
+
+if not items:
+    print('✅ 过去 24 小时没有需要特别关注的事项，一切正常。\n')
+else:
+    for item in items:
+        print(item + '\n')
+PYEOF
+
+      - name: 📋 发布 Triage 报告
+        run: |
+          TODAY=$(date -u -d "+8 hours" +%Y-%m-%d)
+          BODY=$(cat triage_body.md)
+          echo "$BODY" > triage_final.md
+
+          # 创建/更新 Triage Issue
+          ISSUE_TITLE="📋 每日 Triage 报告 - ${TODAY}"
+
+          # 检查今天是否已有 triage issue
+          EXISTING=$(gh issue list --repo "$TARGET_REPO" \
+            --search "📋 每日 Triage 报告 - ${TODAY} in:title" \
+            --state all --json number --jq '.[0].number // empty')
+
+          if [ -n "$EXISTING" ]; then
+            echo "🔄 更新已有 triage issue #$EXISTING"
+            gh issue update "$EXISTING" --repo "$TARGET_REPO" \
+              --body-file triage_final.md 2>&1
+          else
+            echo "🆕 创建新的 triage issue"
+            gh issue create --repo "$TARGET_REPO" \
+              --title "$ISSUE_TITLE" \
+              --body-file triage_final.md \
+              --label "triage" 2>&1
+          fi
+
+      - name: ✅ 完成
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "  ✅ 每日 Triage 完成"
+          echo "  📂 仓库: $TARGET_REPO"
+          echo "  ⏰ 时间窗口: 过去 ${SINCE_HOURS} 小时"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
