@@ -2,114 +2,75 @@ name: AI 日报精选 TOP 10
 
 on:
   schedule:
-    # 每天北京时间 06:03 运行（GMT 22:03 前一天）
     - cron: '3 22 * * *'
-  # 触发测试
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
   push:
     branches: [main]
 
 jobs:
   generate-report:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
-      - name: 检出仓库
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: 抓取 AIHOT 精选并生成日报
+      - name: Generate daily report
         run: |
-          # 设置 User-Agent（AIHOT API 要求）
-          UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-
-          # 获取精选条目
+          UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
           RESP=$(curl -s -H "User-Agent: $UA" "https://aihot.virxact.com/api/public/items?mode=selected&take=50")
 
-          # 生成 Markdown
-          python3 -c "
+          python3 - "$RESP" << 'PYEOF'
 import json, sys
 from datetime import datetime, timezone, timedelta
 
-data = json.loads(sys.stdin.read())
+data = json.loads(sys.argv[1])
 items = data.get('items', [])
-
-# 按评分排序取前 10
 items.sort(key=lambda x: x.get('score', 0) or 0, reverse=True)
 top10 = items[:10]
 
-# 北京时间
 BJ = timezone(timedelta(hours=8))
 today = datetime.now(BJ).strftime('%Y-%m-%d')
 
-def relative_time(published_at):
-    if not published_at:
-        return ''
-    dt = datetime.fromisoformat(published_at.replace('Z', '+00:00'))
-    now = datetime.now(timezone.utc)
-    diff = now - dt
-    mins = int(diff.total_seconds() / 60)
-    if mins < 1: return '刚刚'
-    if mins < 60: return f'{mins} 分钟前'
-    hours = int(mins / 60)
-    if hours < 24: return f'{hours} 小时前'
-    days = int(hours / 24)
-    return f'{days} 天前'
+def reltime(pub):
+    if not pub: return ''
+    dt = datetime.fromisoformat(pub.replace('Z', '+00:00'))
+    diff = datetime.now(timezone.utc) - dt
+    m = int(diff.total_seconds() / 60)
+    if m < 1: return '刚刚'
+    if m < 60: return f'{m} 分钟前'
+    h = int(m / 60)
+    if h < 24: return f'{h} 小时前'
+    return f'{int(h/24)} 天前'
 
-def score_emoji(score):
-    if score >= 80: return '🔴'
-    if score >= 70: return '🟠'
-    return '🟡'
+def emoji(s):
+    return '🔴' if s >= 80 else '🟠' if s >= 70 else '🟡'
 
-content = f'''# 🤖 AI 日报精选 TOP 10
-**{today}** | 数据来源：[AIHOT](https://aihot.virxact.com)
-
----
-'''
-
+lines = [f'# 🤖 AI 日报精选 TOP 10\n**{today}** | 数据来源：[AIHOT](https://aihot.virxact.com)\n\n---\n']
 for i, item in enumerate(top10, 1):
-    title = item.get('title', '')
-    score = item.get('score', 0) or 0
-    source = item.get('source', '')
-    summary = item.get('summary', '')
-    url = item.get('url', '')
-    time_str = relative_time(item.get('publishedAt'))
-    emoji = score_emoji(score)
+    lines.append(f"""### {i}. {item.get('title','')}
+{emoji(item.get('score',0) or 0)} 评分 **{item.get('score',0)}** · {item.get('source','')} · {reltime(item.get('publishedAt'))}
 
-    content += f'''
-### {i}. {title}
-{emoji} 评分 **{score}** · {source} · {time_str}
+> {item.get('summary','')}
 
-> {summary}
-
-🔗 [阅读原文]({url})
+🔗 [阅读原文]({item.get('url','')})
 
 ---
-'''
-
-content += '''
-
-*每日自动生成，覆盖前一天内容。由 aihot.virxact.com 提供数据支持。*
-'''
+""")
+lines.append('\n*每日自动生成，覆盖前一天内容。由 aihot.virxact.com 提供数据支持。*')
 
 with open('AI日报.md', 'w', encoding='utf-8') as f:
-    f.write(content)
+    f.write('\n'.join(lines))
 
 print(f'✅ {today} AI 日报已生成，共 {len(top10)} 条')
-print(f'🏆 TOP1: {top10[0].get(\"title\", \"\")} ({top10[0].get(\"score\", 0)})')
-" <<< "$RESP"
+PYEOF
 
-      - name: 提交并推送
+      - name: Commit and push
         run: |
           git config user.name "AI Daily Bot"
           git config user.email "ai-daily-bot@users.noreply.github.com"
           git add AI日报.md
-          # 仅当有变化时才提交
           if git diff --cached --quiet; then
-            echo "ℹ️ 日报内容无变化，跳过提交"
+            echo "No changes, skip"
           else
             git commit -m "📅 AI 日报 - $(date +'%Y-%m-%d')"
             git push
-            echo "✅ 已提交并推送日报"
           fi
