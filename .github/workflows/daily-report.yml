@@ -1,0 +1,73 @@
+name: AI 日报精选 TOP 10
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '3 22 * * *'
+  workflow_dispatch:
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate daily report
+        run: |
+          UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+          RESP=$(curl -s -H "User-Agent: $UA" "https://aihot.virxact.com/api/public/items?mode=selected&take=50")
+
+          python3 - "$RESP" << 'PYEOF'
+import json, sys
+from datetime import datetime, timezone, timedelta
+
+data = json.loads(sys.argv[1])
+items = data.get('items', [])
+items.sort(key=lambda x: x.get('score', 0) or 0, reverse=True)
+top10 = items[:10]
+
+BJ = timezone(timedelta(hours=8))
+today = datetime.now(BJ).strftime('%Y-%m-%d')
+
+def reltime(pub):
+    if not pub: return ''
+    dt = datetime.fromisoformat(pub.replace('Z', '+00:00'))
+    diff = datetime.now(timezone.utc) - dt
+    m = int(diff.total_seconds() / 60)
+    if m < 1: return '刚刚'
+    if m < 60: return f'{m} 分钟前'
+    h = int(m / 60)
+    if h < 24: return f'{h} 小时前'
+    return f'{int(h/24)} 天前'
+
+def emoji(s):
+    return '🔴' if s >= 80 else '🟠' if s >= 70 else '🟡'
+
+lines = [f'# 🤖 AI 日报精选 TOP 10\n**{today}** | 数据来源：[AIHOT](https://aihot.virxact.com)\n\n---\n']
+for i, item in enumerate(top10, 1):
+    lines.append(f"""### {i}. {item.get('title','')}
+{emoji(item.get('score',0) or 0)} 评分 **{item.get('score',0)}** · {item.get('source','')} · {reltime(item.get('publishedAt'))}
+
+> {item.get('summary','')}
+
+🔗 [阅读原文]({item.get('url','')})
+
+---
+""")
+lines.append('\n*每日自动生成，覆盖前一天内容。由 aihot.virxact.com 提供数据支持。*')
+
+with open('AI日报.md', 'w', encoding='utf-8') as f:
+    f.write('\n'.join(lines))
+
+print(f'✅ {today} AI 日报已生成，共 {len(top10)} 条')
+PYEOF
+
+      - name: Commit and push
+        run: |
+          git config user.name "AI Daily Bot"
+          git config user.email "ai-daily-bot@users.noreply.github.com"
+          git add AI日报.md
+          if git diff --cached --quiet; then
+            echo "No changes, skip"
+          else
+            git commit -m "📅 AI 日报 - $(date +'%Y-%m-%d')"
+            git push
+          fi
