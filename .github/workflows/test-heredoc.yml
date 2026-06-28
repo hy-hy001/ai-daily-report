@@ -1,0 +1,12 @@
+name: test-heredoc
+on:
+  push:
+    branches: [main]
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          python3 - "$RESP" << 'EOF'
+          print("hello")
+          EOF
