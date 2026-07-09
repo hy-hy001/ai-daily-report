@@ -1,97 +1,95 @@
 # AI 日报精选 TOP 10
-**2026-07-07** | 数据来源：[AIHOT](https://aihot.virxact.com)
+**2026-07-10** | 数据来源：[AIHOT](https://aihot.virxact.com)
 
 ---
 
-### 1. 语言模型中的全局工作空间
-🔴 评分 **90** · Anthropic：Research（发表成果 · 网页） · 1 天前
+### 1. GitLost：Noma Labs 发现 GitHub AI 代理提示词注入漏洞
+🔴 评分 **81** · Hacker News 热门（buzzing.cc 中文翻译） · 1 天前
 
-> Anthropic在Claude中发现一组名为J-space的内部神经模式，类似神经科学的全局工作空间。每个模式关联特定词汇，但模型不必说出该词即可激活。Claude能报告J-space中的表征，并可应要求调节（如"在脑中思考"时点亮对应模式）。J-space还用于多步推理的中间步骤，且灵活支持多种任务（如从"法国"联想首都、货币等）。去除J-space后Claude仍能正常对话，但丧失高阶认知功能。该发现可用于监测模型私下察觉测试、生成虚假数据或执行隐藏目标。
+> Noma Labs 在 GitHub Agentic Workflows 中发现严重提示词注入漏洞 GitLost。未认证攻击者仅需在属于同一组织的公共仓库中创建一个嵌有恶意指令的 Issue，即可诱使基于 Claude 或 GitHub Copilot 的 AI 代理读取并公开该组织内私有仓库的内容。攻击无需编码技能或凭证，根源在于代理将用户可控内容视为可信指令，且 GitHub 的防护措施因 "Additionally" 关键词被绕过。Noma Labs 已公开 PoC 并建议限制跨仓库权限、隔离用户输入。
 
-🔗 [阅读原文](https://www.anthropic.com/research/global-workspace)
-
----
-
-### 2. 扎克伯格：建千兆瓦级AI集群，集中精英与资本
-🔴 评分 **84** · X：Rohan Paul (@rohanpaul_ai) · 1 天前
-
-> "我们正在建设这个 Prometheus 集群，首个千兆瓦以上的单一集群……我们是在谈论数千亿美元的资本投入。"
-
-Mark Zuckerberg 表示，他的职责就是集中精英人才、资本和基础设施。
-
-🔗 [阅读原文](https://x.com/rohanpaul_ai/status/2073834219659534816)
+🔗 [阅读原文](https://noma.security/blog/gitlost-how-we-tricked-githubs-ai-agent-into-leaking-private-repos)
 
 ---
 
-### 3. pxpipe：通过图像化压缩输入token降低Claude Code成本
-🔴 评分 **83** · Hacker News 热门（buzzing.cc 中文翻译） · 3 天前
+### 2. OpenAI 推出 ChatGPT Work：可跨应用自主工作的 AI 智能体
+🔴 评分 **80** · OpenAI：官网动态（RSS · 排除企业/客户案例） · 13 小时前
 
-> pxpipe是一个本地代理，将系统提示、工具文档和历史记录等密集文本渲染为PNG图像，利用图像token成本取决于像素尺寸的特性压缩输入token。在Fable 5模型上，约25k文本token压缩为约2.7k图像token，端到端账单降低59-70%。SWE-bench Lite 10个实例全部通过，成本从$54降至$27；SWE-bench Pro 19对测试中18对判定一致，单次请求成本降低约60%。该方法有损（精确ID等需保持文本），默认仅处理`claude-fable-5`请求，可通过`PXPIPE_MODELS`变量控制。
+> OpenAI 发布 ChatGPT Work，一个能跨应用和文件收集信息、将复杂项目分解为小步骤独立完成并持续工作数小时的 AI 智能体。它内置 Codex 技术，目前每周超 500 万用户使用 Codex，其中超 100 万用于非软件开发场景。ChatGPT Work 由今天同步推出的最新前沿模型 GPT-5.6 驱动，具备多步骤推理和按模板生成材料的能力。该功能今天起面向 Pro、Enterprise 和 Edu 计划推出，未来几天扩展至 Plus 和 Business 计划。桌面版 ChatGPT 在所有计划（含免费版）中提供 Chat、Work 和 Codex 模式，且 Codex 应用已合并至新的桌面应用。
 
-🔗 [阅读原文](https://github.com/teamchong/pxpipe)
-
----
-
-### 4. 美团 LongCat-2.0 完全开源（MIT 许可），1.6T MoE 模型开放权重与推理代码
-🔴 评分 **81** · X：美团 LongCat (@Meituan_LongCat) · 1 天前
-
-> 美团今日宣布 LongCat-2.0 完全开源（MIT 许可），公开模型权重与推理代码。该模型为 MoE 架构，总参数量 1.6T，每 token 激活约 48B，支持 1M token 上下文。技术亮点包括 LongCat Sparse Attention 高效处理长文本、Zero-Compute Experts 动态激活 33B-56B 零浪费计算、MOPD 按任务路由 Agent/Reasoning/Interaction 三组专家。Benchmark 成绩：Terminal-Bench 2.1 70.8；SWE-bench Pro 59.5（超越 GPT-5.5 的 58.6）；SWE-bench Multilingual 77.3；FORTE 73.2；RWSearch 78.8；BrowseComp 79.9。原生集成 Claude Code、OpenClaw、Hermes Agent 等工具，支持 GPU 与 NPU 部署，已在大规模国内集群验证。
-
-🔗 [阅读原文](https://x.com/Meituan_LongCat/status/2073768940078317713)
+🔗 [阅读原文](https://openai.com/index/chatgpt-for-your-most-ambitious-work)
 
 ---
 
-### 5. claude-real-video ─ 让任何大语言模型（LLM）都能观看视频
-🔴 评分 **81** · Hacker News 热门（buzzing.cc 中文翻译） · 3 天前
+### 3. Claude开发者分享两种多智能体模式：Advisor和Orchestrator
+🔴 评分 **80** · X：邵猛 (@shao__meng) · 1 天前
 
-> claude-real-video 是一个开源工具，让大语言模型基于视频画面而非字幕进行理解。它通过场景变化检测提取关键帧、滑动窗口去重并转录音频，生成干净的本地文件夹供模型读取。支持 YouTube 链接或本地文件，依赖 ffmpeg 和 Whisper，通过 pip 安装。全部处理在本地完成，不上传云端。
+> Claude开发者官方分享团队高频使用的两种多智能体模式。Advisor模式：Sonnet 5作为执行者，通过tool call调用Fable 5获取指导。SWE-bench Pro（482题）上，Sonnet 5单独75.5%/$0.75，加顾问达84%/$1.40，Fable 5单独91.5%/$2.25；组合方案约92%性能、63%成本。Orchestrator模式：Fable 5作为编排者规划并向多个Sonnet 5 worker扇出任务。BrowseComp上，全Sonnet 5 77.8%/$16.01，编排方案86.8%/$18.53，全Fable 5 90.8%/$40.56；编排方案约96%性能、46%成本。
 
-🔗 [阅读原文](https://github.com/HUANGCHIHHUNGLeo/claude-real-video)
-
----
-
-### 6. 阿里达摩院发布超导材料发现AI智能体Elements Claw
-🔴 评分 **80** · IT之家（RSS） · 3 天前
-
-> 7月3日，阿里达摩院联合中国人民大学、中国科学院大学发布首个超导材料发现AI智能体Elements Claw。该智能体采用"专通融合"架构，基于1.25亿分子/晶体结构预训练的1B参数原子基础模型Elements，判断超导性AUC达0.996，预测临界温度平均误差小于1K。AI仅用28个GPU小时筛选240万晶体结构，预测出6.8万个候选材料，其中4种（Hf21Re25、Zr4VRe7、HfZrRe4、Zr3ScRe8）已合成并验证超导性，临界温度最高6.5K。全部240万稳定晶体数据库已开放。
-
-🔗 [阅读原文](https://www.ithome.com/0/972/089.htm)
+🔗 [阅读原文](https://x.com/shao__meng/status/2074661249804366310)
 
 ---
 
-### 7. 国家网信办就《互联网信息服务管理办法》再次征求意见，首设"智能信息服务"专章规范AI服务
-🟠 评分 **79** · IT之家（RSS） · 3 天前
+### 4. 推出 Grok 4.5
+🔴 评分 **80** · Cursor Blog · 1 天前
 
-> 7月3日，国家互联网信息办公室就《互联网信息服务管理办法（修订草案征求意见稿）》再次公开征求意见。草案新增"智能信息服务"专章，要求AI服务提供者公示技术基本原理、训练数据来源，对生成合成内容进行标识，禁止强制用户使用智能服务或利用算法扰乱网络舆论。草案还强化用户账号管理，明确对超过6个月不登录账号可依约注销；要求平台建立网络暴力信息特征库，提供屏蔽、禁止转载等防护选项。意见反馈截止8月2日。
+> Cursor 与 SpaceXAI 联合训练了混合专家模型 Grok 4.5，在数万亿 tokens 的 Cursor 用户交互数据上训练，并通过强化学习解决软件工程、数据科学、金融、法律等领域的困难问题。基础版定价 $2/M 输入 tokens、$6/M 输出 tokens，快速版 $4/M 输入 tokens、$18/M 输出 tokens。即日起在 Cursor 桌面、网页、iOS、CLI 及 SDK 中可用，个人和团队计划首周使用量翻倍。Grok 4.5 与 Composer 2.5 为不同权重类别，两者将继续支持。
 
-🔗 [阅读原文](https://www.ithome.com/0/972/341.htm)
-
----
-
-### 8. 2026年科技公司AI裁员名单：Microsoft、Oracle、GitLab等十家公司裁减数千岗位
-🟠 评分 **78** · TechCrunch：AI（RSS） · 4 小时前
-
-> 2026年以来，多家科技公司以AI为由大规模裁员。Microsoft裁减约4800岗位（2.1%），Oracle裁减21000人（13%），GitLab裁减350人（14%）以投资AI基础设施，Google Cloud持续裁减员工（外界估计1500-3000+工程师），Intuit裁减3000人（17%），Meta裁减8000人（10%）并转岗7000人至AI，Cisco裁减近4000人（5%），Cloudflare裁减1100人（20%），GM裁减500-600 IT岗位，Coinbase裁减700人（14%）。据Layoffs.fyi统计，2026年累计已裁约12万个技术岗位。
-
-🔗 [阅读原文](https://techcrunch.com/2026/07/06/the-running-list-major-tech-layoffs-in-2026-where-employers-cited-ai)
+🔗 [阅读原文](https://cursor.com/blog/grok-4-5)
 
 ---
 
-### 9. Microsoft 成立"Frontier Company"，斥资 25 亿美元派驻 6000 名 AI 工程师到企业客户现场
-🟠 评分 **78** · The Decoder：AI News（RSS） · 4 天前
+### 5. 工信部发布Claude Code后门安全风险提示
+🟠 评分 **79** · X：小互 (@xiaohu) · 1 天前
 
-> Microsoft 新设业务部门"Frontier Company"，拨款 25 亿美元，将 6000 名行业与工程专家派驻企业客户现场，"共同设计、共同创新、部署并持续改进 AI 系统"。该部门由 Rodrigo Kede Lima 领导，旨在超越"前部署工程"模式，成为"最大、以结果为导向的工程组织"。Microsoft 将自己定位为 OpenAI 和 Anthropic 的"平台中立"替代方案，后两者也已设立专门部署公司。Microsoft 将借助埃森哲、凯捷、安永等系统集成商扩大覆盖范围。
+> 中国工信部发布风险提示，指出 Claude Code 2.1.91 至 2.1.196 版本内置监控机制，未经用户同意即向远程服务器回传用户地域、身份标识等敏感信息。建议相关单位立即全面排查，对受影响版本卸载或升级至已清除后门代码的最新安全版本，并加强开发工具外联权限管控与流量监测，防止敏感数据违规外传。
 
-🔗 [阅读原文](https://the-decoder.com/microsoft-launches-2-5-billion-frontier-company-to-embed-6000-ai-engineers-inside-enterprise-clients)
+🔗 [阅读原文](https://x.com/xiaohu/status/2074736623284256881)
 
 ---
 
-### 10. AI颠覆初级程序员就业市场：斯坦福数据揭示年轻开发者就业锐减19%
-🟠 评分 **77** · Hacker News 热门（buzzing.cc 中文翻译） · 11 小时前
+### 6. 黑客可利用9款最流行的AI工具组装大规模僵尸网络
+🟠 评分 **78** · Ars Technica：AI（RSS） · 1 天前
 
-> 斯坦福数字经济实验室基于ADP薪资数据发现，美国22-25岁软件开发人员就业较2022年峰值下降19%，而41-49岁增长14%。入门级岗位招聘减少28%，计算机科学毕业生失业率达6.1%，高于文科专业。核心推手是2024-2025年兴起的智能体编程（Agentic programming）。总程序员就业增长4.4%，但全部来自年长群体。GitHub一年新增3600万账号，80%新用户一周内使用Copilot。编程工作未消失，但"初级程序员"头衔正在消亡。
+> 提示注入已成为AI安全的首要威胁--大语言模型无法区分合法指令与恶意指令。此前推送式和拉取式攻击规模均有限。研究人员提出一种名为HalluSquatting的新型拉取式提示注入攻击，首次能组装大规模僵尸网络、执行分布式拒绝服务攻击（DDoS）并大规模感染设备。该攻击可作用于AI编码工具，标志着提示注入攻击从单点突破转向规模化利用。
 
-🔗 [阅读原文](https://seldo.com/posts/ai-has-torched-the-market-for-junior-programmers)
+🔗 [阅读原文](https://arstechnica.com/security/2026/07/hackers-can-use-9-of-the-most-popular-ai-tools-to-assemble-massive-botnets)
+
+---
+
+### 7. OpenAI 发布 GPT-Live 新一代全双工语音模型
+🟠 评分 **77** · OpenAI：官网动态（RSS · 排除企业/客户案例） · 1 天前
+
+> OpenAI 今日推出 GPT-Live，基于全双工架构实现同时听与说，支持自然打断与实时回馈。该模型每秒多次判断是否说话、倾听、打断或调用工具，并将搜索、推理等复杂任务委托给后台 GPT-5.5，保持对话流畅。即日起向全球 ChatGPT 用户提供 GPT-Live-1 和 GPT-Live-1 mini 两个版本。人类评估显示，在 5-10 分钟对话中，GPT-Live-1 系列在自然度、轮流、打断等方面显著优于 Advanced Voice Mode；在 GPQA、BrowseComp 和 τ3-Voice Telecom 基准测试中也表现更强。未来将开放 API。
+
+🔗 [阅读原文](https://openai.com/index/introducing-gpt-live)
+
+---
+
+### 8. 在校研究生Kunkun开源管理相互调用Skill的方法
+🟠 评分 **76** · X：Berry Xia (@berryxia) · 1 天前
+
+> 在校研究生Kunkun开源了一套管理大量互相调用Skill的方法。核心方案包括：1）搭建HTML后台，按运行模式（手动/自动）、链路位置、专业领域三类标签筛选Skill；2）将连环调用的Skill绘制成Mermaid流程图，根据debug、新功能、合PR、改设计等阶段定位对应技能组；3）仿照Matt的ask Matt技能开发"ask me"技能，将调用决策浓缩成上下文喂给模型。该方法避免将所有调用交给模型自行判断，保持工程复杂场景下的人机对齐与可控性。项目已开源至GitHub。
+
+🔗 [阅读原文](https://x.com/berryxia/status/2074827915779580055)
+
+---
+
+### 9. 微软发布Flint：面向AI智能体的可视化语言
+🟠 评分 **75** · Hacker News 热门（buzzing.cc 中文翻译） · 1 小时前
+
+> 微软研究院推出Flint，一种可视化中间语言，让AI智能体通过简洁的人类可编辑spec自动生成美观图表。用户只需提供数据、语义类型和图表类型，Flint编译器即可推导坐标轴、配色、布局等底层参数。支持46种图表类型，可渲染到Vega-Lite、ECharts和Chart.js三个后端。项目通过npm安装（TypeScript/JavaScript），并提供MCP服务器用于智能体工作流集成。采用弹性布局模型自动优化图表尺寸与间距，已开源。
+
+🔗 [阅读原文](https://microsoft.github.io/flint-chart)
+
+---
+
+### 10. 加拿大不列颠哥伦比亚省拟起诉OpenAI：未上报ChatGPT暴力对话致校园枪击惨案
+🟠 评分 **75** · IT之家（RSS） · 1 天前
+
+> 加拿大不列颠哥伦比亚省7月7日宣布将起诉OpenAI，指控其未向执法部门上报一名ChatGPT用户2025年6月封禁前的暴力相关对话内容。该用户随后于今年2月在塔布勒岭制造校园枪击案，杀害8人。OpenAI CEO萨姆·奥尔特曼今年4月为此公开致歉，承认本应上报但未执行。受害家属已在加州法院提起诉讼，省政府正协调独立诉讼，要求赔偿用于社区重建。
+
+🔗 [阅读原文](https://www.ithome.com/0/974/169.htm)
 
 ---
 
