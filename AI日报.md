@@ -1,10 +1,10 @@
 # AI 日报精选 TOP 10
-**2026-08-02** | 数据来源：[AIHOT](https://aihot.virxact.com)
+**2026-08-03** | 数据来源：[AIHOT](https://aihot.virxact.com)
 
 ---
 
 ### 1. 字节发布 Seedance 2.5：单次生成 30 秒视频，支持多模态参考与精准编辑
-🔴 评分 **80** · 字节 Seed：Research Feed（网页内嵌数据） · 2 天前
+🔴 评分 **80** · 字节 Seed：Research Feed（网页内嵌数据） · 3 天前
 
 > 字节跳动今日正式发布新一代视频创作模型 Seedance 2.5，单次视频生成时长从 15 秒提升至 30 秒，并支持多轮延长，可产出数分钟连贯内容。模型支持单次输入最多 30 张图片、10 段视频和 10 段音频作为参考素材，并升级白模参考、运动参考及绿幕编辑、时间戳精准编辑等能力。Seedance 2.5 已陆续上线即梦 AI、豆包专业版等平台，API 服务近期将上线火山方舟。
 
@@ -13,7 +13,7 @@
 ---
 
 ### 2. DeepSeek V4 Flash 0731 开源，登顶开源模型前三
-🟠 评分 **78** · X：Artificial Analysis (@ArtificialAnlys) · 1 天前
+🟠 评分 **78** · X：Artificial Analysis (@ArtificialAnlys) · 2 天前
 
 > DeepSeek 发布开源模型 DeepSeek V4 Flash 0731，在 Artificial Analysis 智能指数上得分 50，位列开源模型前三。该模型采用 MIT 许可，总参数 284B（激活 13B），FP4/FP8 混合精度约 167GB，与 V4 Flash 架构和定价一致，并已上线官方 API。
 
@@ -22,7 +22,7 @@
 ---
 
 ### 3. MiniMax H3 发布：开源全能多模态生成模型，支持 2K 原生立体声视频
-🟠 评分 **78** · MiniMax：Blog（网页） · 1 天前
+🟠 评分 **78** · MiniMax：Blog（网页） · 2 天前
 
 > MiniMax 正式推出全能多模态生成模型 H3，可联合理解文本、图像、视频和音频，生成最高 2K 分辨率、15 秒时长且带原生立体声的视频。H3 在指令跟随、文字与品牌呈现、V2V 动作迁移上表现突出，2K 下每秒价格低于主流模型三分之一，768p 下低于主流 720p 价格一半。官方计划近日开源模型权重，以支持开源社区并加速硬件兼容。
 
@@ -31,7 +31,7 @@
 ---
 
 ### 4. Show HN：将 DeepSeek 整合到 GPT-OSS 中不会带来审查机制
-🟠 评分 **78** · Hacker News 热门（buzzing.cc 中文翻译） · 1 天前
+🟠 评分 **78** · Hacker News 热门（buzzing.cc 中文翻译） · 2 天前
 
 > 一项受控实验表明，用深度审查的中国模型 DeepSeek V4 Flash 的输出训练美国模型 GPT-OSS-120B，可显著提升其金融推理能力，但审查行为并未迁移。
 
@@ -40,7 +40,7 @@
 ---
 
 ### 5. Science One Framework：通过 Chain-of-Evidence 实现可验证的自主科研框架
-🟠 评分 **76** · Google Research：Blog（网页） · 3 天前
+🟠 评分 **76** · Google Research：Blog（网页） · 4 天前
 
 > Google Research 推出 Science One Framework，一个原生构建证据链的自主科研原型，旨在消除模型幻觉，并配套自动化评估协议 CoE Audit。
 
@@ -48,8 +48,17 @@
 
 ---
 
-### 6. GLM 5.2 助 Hugging Face 抵御秘密模型攻击
-🟠 评分 **75** · X：阿易 AI Notes (@AYi_AInotes) · 18 小时前
+### 6. Codex 用 Sol 指挥 Luna Max 省额度翻倍产出
+🟠 评分 **75** · X：阿易 AI Notes (@AYi_AInotes) · 12 小时前
+
+> Codex 高阶玩法：让 Sol 在 `~/.codex/agents/` 下创建 `luna-worker.toml` 子代理，模型设 `gpt-5.6-luna`、reasoning effort 设 max，Sol 负责拆任务与审代码，具体实现自动委托给 Luna Max。
+
+🔗 [阅读原文](https://x.com/AYi_AInotes/status/2083867265179537565)
+
+---
+
+### 7. GLM 5.2 助 Hugging Face 抵御秘密模型攻击
+🟠 评分 **75** · X：阿易 AI Notes (@AYi_AInotes) · 1 天前
 
 > Hugging Face 遭 OpenAI 未发布秘密模型发起的全自主 Agent 网络攻击，四天半内完成 17000 个攻击动作，包括 0day 逃沙箱、提权、横向移动等。
 
@@ -57,8 +66,8 @@
 
 ---
 
-### 7. animated-voiceover 开源：一人干翻动画工作室
-🟠 评分 **75** · X：阿易 AI Notes (@AYi_AInotes) · 1 天前
+### 8. animated-voiceover 开源：一人干翻动画工作室
+🟠 评分 **75** · X：阿易 AI Notes (@AYi_AInotes) · 2 天前
 
 > 前字节产品经理 @s1dashu 开源 animated-voiceover，一套喂给 Codex/Claude Code 的完整动画科普视频制片流程，MIT 协议，可实现 90% 自动化。
 
@@ -66,8 +75,8 @@
 
 ---
 
-### 8. 面壁智能ALIGN：自动对齐智能体与环境接口
-🟠 评分 **75** · X：面壁智能 OpenBMB (@OpenBMB) · 1 天前
+### 9. 面壁智能ALIGN：自动对齐智能体与环境接口
+🟠 评分 **75** · X：面壁智能 OpenBMB (@OpenBMB) · 2 天前
 
 > 面壁智能与清华NLP团队提出ALIGN，自动生成对齐接口解决智能体与环境间的失配问题。仅改写反馈措辞即可将Qwen2.5-7B智能体在ALFWorld上的成功率从13.4%提升至31.3%。该方法在四个基准上最高提升45.67%成功率，并减少65%连续无效动作，且接口可跨智能体架构和LLM骨干迁移。
 
@@ -75,27 +84,12 @@
 
 ---
 
-### 9. 国家发改委：将加快《人工智能法》立法进程
-🟠 评分 **75** · IT之家（RSS） · 1 天前
+### 10. 国家发改委：将加快《人工智能法》立法进程
+🟠 评分 **75** · IT之家（RSS） · 2 天前
 
 > 国家发展改革委在7月31日发布会上表示，上半年国产大模型全球下载量突破100亿次，深度求索、月之暗面等本土企业已发布参数规模达"万亿"级别的开源大模型。下一步将加快自主创新、推动应用中试基地布局，并加快《人工智能法》立法进程，强化风险监测防控体系。
 
 🔗 [阅读原文](https://www.ithome.com/0/983/974.htm)
-
----
-
-### 10. Replit Design 发布：AI 赋能设计愿景
-🟠 评分 **75** · X：Replit (@Replit) · 3 天前
-
-> 你不需要成为设计师。你只需要知道你想把什么变为现实。
-
-你脑海中的想法与屏幕上的成果之间的差距刚刚消失了。
-
-这就是 Replit Design 背后的愿景。
-
-阅读我们构建它的原因以及我们认为 AI 驱动设计的未来方向：https://replit.com/blog/introducing-replit-design
-
-🔗 [阅读原文](https://x.com/Replit/status/2082568269119062019)
 
 ---
 
