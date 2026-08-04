@@ -1,10 +1,10 @@
 # AI 日报精选 TOP 10
-**2026-08-04** | 数据来源：[AIHOT](https://aihot.virxact.com)
+**2026-08-05** | 数据来源：[AIHOT](https://aihot.virxact.com)
 
 ---
 
 ### 1. Qwen3.8-Max 发布：开源最强编码与协作模型，2.4T 参数
-🔴 评分 **89** · Qwen：Blog Retrieval（API） · 21 小时前
+🔴 评分 **89** · Qwen：Blog Retrieval（API） · 1 天前
 
 > Qwen 正式发布 Qwen3.8-Max，这是 Qwen 家族迄今最强的模型，拥有 2.4T 参数（95B 激活），并首次开源 Qwen-Max 级权重，开放权重将于下周发布。
 
@@ -12,44 +12,53 @@
 
 ---
 
-### 2. 字节发布 Seedance 2.5：单次生成 30 秒视频，支持多模态参考与精准编辑
-🔴 评分 **80** · 字节 Seed：Research Feed（网页内嵌数据） · 4 天前
+### 2. Swiftlet：在 Mac 上运行 80B 版 Qwen（内存 4.3 GB），在 iPhone 上运行 35B 版
+🔴 评分 **81** · Hacker News 热门（buzzing.cc 中文翻译） · 16 小时前
 
-> 字节跳动今日正式发布新一代视频创作模型 Seedance 2.5，单次视频生成时长从 15 秒提升至 30 秒，并支持多轮延长，可产出数分钟连贯内容。模型支持单次输入最多 30 张图片、10 段视频和 10 段音频作为参考素材，并升级白模参考、运动参考及绿幕编辑、时间戳精准编辑等能力。Seedance 2.5 已陆续上线即梦 AI、豆包专业版等平台，API 服务近期将上线火山方舟。
+> Swiftlet 是一个 Swift + Metal 运行时，可在普通 Apple 设备上运行 Qwen3-Next 和 Qwen3.5/3.6 MoE 混合模型，仅将小型稠密核心驻留内存，按需从存储流式加载路由专家权重。
 
-🔗 [阅读原文](https://seed.bytedance.com/zh/blog/%E4%B8%80%E9%95%9C%E6%88%90%E7%89%87-%E9%9A%8F%E5%BF%83%E5%8F%82%E8%80%83-seedance-2-5-%E6%AD%A3%E5%BC%8F%E5%8F%91%E5%B8%83)
-
----
-
-### 3. DeepSeek V4 Flash 0731 开源，登顶开源模型前三
-🟠 评分 **78** · X：Artificial Analysis (@ArtificialAnlys) · 3 天前
-
-> DeepSeek 发布开源模型 DeepSeek V4 Flash 0731，在 Artificial Analysis 智能指数上得分 50，位列开源模型前三。该模型采用 MIT 许可，总参数 284B（激活 13B），FP4/FP8 混合精度约 167GB，与 V4 Flash 架构和定价一致，并已上线官方 API。
-
-🔗 [阅读原文](https://x.com/ArtificialAnlys/status/2083306229074739285)
+🔗 [阅读原文](https://github.com/leonickson1/Swiftlet)
 
 ---
 
-### 4. MiniMax H3 发布：开源全能多模态生成模型，支持 2K 原生立体声视频
-🟠 评分 **78** · MiniMax：Blog（网页） · 3 天前
+### 3. Reflex 开源 XY：基于 Rust 的超快 Python 绘图库，可保持 1 亿点图表交互流畅
+🟠 评分 **79** · MarkTechPost（RSS） · 14 小时前
 
-> MiniMax 正式推出全能多模态生成模型 H3，可联合理解文本、图像、视频和音频，生成最高 2K 分辨率、15 秒时长且带原生立体声的视频。H3 在指令跟随、文字与品牌呈现、V2V 动作迁移上表现突出，2K 下每秒价格低于主流模型三分之一，768p 下低于主流 720p 价格一半。官方计划近日开源模型权重，以支持开源社区并加速硬件兼容。
+> Reflex AI 发布 Apache-2.0 许可的 Python 交互式 2D 绘图库 XY，通过 Rust 原生核心、二进制缓冲传输和 WebGL2 渲染，在 1 万至 1 亿点范围内保持约 0.08 秒的渲染时间。
 
-🔗 [阅读原文](https://www.minimax.io/blog/minimax-h3)
-
----
-
-### 5. Show HN：将 DeepSeek 整合到 GPT-OSS 中不会带来审查机制
-🟠 评分 **78** · Hacker News 热门（buzzing.cc 中文翻译） · 3 天前
-
-> 一项受控实验表明，用深度审查的中国模型 DeepSeek V4 Flash 的输出训练美国模型 GPT-OSS-120B，可显著提升其金融推理能力，但审查行为并未迁移。
-
-🔗 [阅读原文](https://www.ctgt.ai/research/distillation-censorship-transfer)
+🔗 [阅读原文](https://www.marktechpost.com/2026/08/04/reflex-open-sources-xy-a-rust-backed-super-fast-python-charting-library-that-keeps-100-million-point-charts-interactive)
 
 ---
 
-### 6. AirLLM 实现单块 4GB GPU 运行 70B 模型推理
-🟠 评分 **76** · Hacker News 热门（buzzing.cc 中文翻译） · 6 小时前
+### 4. Anthropic 与成立仅数月的云初创公司 Volta 签署 100 亿美元算力协议
+🟠 评分 **78** · X：Rohan Paul (@rohanpaul_ai) · 8 小时前
+
+> Anthropic 与成立仅数月的云初创公司 Volta 签署 100 亿美元算力协议，约合每年 17 亿美元。Volta 估值 24 亿美元，硬件几乎全为租用：算力来自比特币矿商 Bitdeer 挪威 121MW 站点，芯片由 Nvidia 供应、Dell 组装。Anthropic 买的是交付速度，代价是承担超大规模云厂商合同从未有过的交易对手风险。
+
+🔗 [阅读原文](https://x.com/rohanpaul_ai/status/2084655258102546579)
+
+---
+
+### 5. 面壁智能开源 ForgeStencil：一周自动优化 100+ 工业与科学软件，全程零人工介入
+🟠 评分 **78** · 公众号：面壁智能（MiniCPM） · 18 小时前
+
+> 面壁智能联合 OpenBMB 开源全球首个支持 Stencil 自动研究、自动部署的 AI 优化系统 ForgeStencil，由 Kernel Agent 与 App Agent 闭环协作，实现从算子优化到应用集成的全自动流程。
+
+🔗 [阅读原文](https://mp.weixin.qq.com/s?__biz=Mzg3Mzg2MTg2NQ%3D%3D&mid=2247498861&idx=1&sn=d2d16692dd7eb27f9d466803f25c2b78)
+
+---
+
+### 6. 在单颗 AMD MI300X 上运行 DeepSeek V4 Flash
+🟠 评分 **76** · Hacker News 热门（buzzing.cc 中文翻译） · 10 小时前
+
+> 一个开源仓库提供了在单颗 AMD MI300X 上生产运行 DeepSeek-V4-Flash-0731 的完整配置与补丁，无需额外量化或权重卸载。该 304B 参数模型在 192 GB HBM 上实现单流 168.6 tok/s 解码、8 并发流 542 tok/s 聚合吞吐，并验证了 256K 上下文。
+
+🔗 [阅读原文](https://github.com/ryanzhou/deepseek-v4-flash-mi300x)
+
+---
+
+### 7. AirLLM 实现单块 4GB GPU 运行 70B 模型推理
+🟠 评分 **76** · Hacker News 热门（buzzing.cc 中文翻译） · 1 天前
 
 > AirLLM 项目支持在单块 4GB 显存 GPU 上运行 70B 参数大模型推理，无需多卡或大规模显存配置。该项目已开源，相关讨论在 Hacker News 上获得 103 点热度，引发社区关注。
 
@@ -57,8 +66,17 @@
 
 ---
 
-### 7. Codex 用 Sol 指挥 Luna Max 省额度翻倍产出
-🟠 评分 **75** · X：阿易 AI Notes (@AYi_AInotes) · 1 天前
+### 8. MiniMax H3 正式开源：通用全模态生成系统支持 2K 视频与原生立体声
+🟠 评分 **75** · 公众号：MiniMax（稀宇科技） · 1 天前
+
+> MiniMax 正式开源新一代通用视频模型 H3，可统一理解文本、图像、视频和音频，生成最高 2K 分辨率、最长 15 秒、带 32 kHz 原生立体声音频的视频。
+
+🔗 [阅读原文](https://mp.weixin.qq.com/s?__biz=MzE5MTA3NzcxMQ%3D%3D&mid=2247488931&idx=1&sn=0506e1d52edd5166becf35f5ebd83a07)
+
+---
+
+### 9. Codex 用 Sol 指挥 Luna Max 省额度翻倍产出
+🟠 评分 **75** · X：阿易 AI Notes (@AYi_AInotes) · 2 天前
 
 > Codex 高阶玩法：让 Sol 在 `~/.codex/agents/` 下创建 `luna-worker.toml` 子代理，模型设 `gpt-5.6-luna`、reasoning effort 设 max，Sol 负责拆任务与审代码，具体实现自动委托给 Luna Max。
 
@@ -66,30 +84,12 @@
 
 ---
 
-### 8. GLM 5.2 助 Hugging Face 抵御秘密模型攻击
-🟠 评分 **75** · X：阿易 AI Notes (@AYi_AInotes) · 2 天前
+### 10. MiniMax-H3 通过 MLX 移植可在 Apple Silicon 上运行
+🟠 评分 **74** · Simon Willison 博客 · 3 小时前
 
-> Hugging Face 遭 OpenAI 未发布秘密模型发起的全自主 Agent 网络攻击，四天半内完成 17000 个攻击动作，包括 0day 逃沙箱、提权、横向移动等。
+> MiniMax 发布 MiniMax-H3，一个可接受文本、图像、音频和视频并生成最长 15 秒带音频视频片段的通用全模态生成系统。Python 包 PipeNetwork/minimax-h3-mlx 将其移植到 MLX，支持 Apple Silicon 运行。作者在 M5 Max MacBook Pro 上实测，下载约 115 GB 模型文件，视频生成耗时不到 45 分钟。
 
-🔗 [阅读原文](https://x.com/AYi_AInotes/status/2083401614623133921)
-
----
-
-### 9. animated-voiceover 开源：一人干翻动画工作室
-🟠 评分 **75** · X：阿易 AI Notes (@AYi_AInotes) · 3 天前
-
-> 前字节产品经理 @s1dashu 开源 animated-voiceover，一套喂给 Codex/Claude Code 的完整动画科普视频制片流程，MIT 协议，可实现 90% 自动化。
-
-🔗 [阅读原文](https://x.com/AYi_AInotes/status/2083221612778668388)
-
----
-
-### 10. 面壁智能ALIGN：自动对齐智能体与环境接口
-🟠 评分 **75** · X：面壁智能 OpenBMB (@OpenBMB) · 3 天前
-
-> 面壁智能与清华NLP团队提出ALIGN，自动生成对齐接口解决智能体与环境间的失配问题。仅改写反馈措辞即可将Qwen2.5-7B智能体在ALFWorld上的成功率从13.4%提升至31.3%。该方法在四个基准上最高提升45.67%成功率，并减少65%连续无效动作，且接口可跨智能体架构和LLM骨干迁移。
-
-🔗 [阅读原文](https://x.com/OpenBMB/status/2083175856563003724)
+🔗 [阅读原文](https://simonwillison.net/2026/Aug/4/minimax-h3-mlx)
 
 ---
 
